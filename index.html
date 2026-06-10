@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serve Nation Career Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #071220;
+  --navy-mid: #0d1f3c;
+  --navy-light: #162d54;
+  --gold: #c9a84c;
+  --gold-light: #e8c87a;
+  --gold-dim: #8a6e30;
+  --cream: #f5f0e8;
+  --cream-dark: #ddd5c0;
+  --red: #8b2020;
+  --green: #1a5c35;
+  --text: #e8dfc8;
+  --text-dim: #8a7d65;
+  --border: rgba(201,168,76,0.2);
+  --border-strong: rgba(201,168,76,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Crimson Pro',Georgia,serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* bg texture */
+body::before{content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%,rgba(201,168,76,0.06) 0%,transparent 55%),
+    repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px),
+    repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px);
+  pointer-events:none;z-index:0;}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(7,18,32,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:0;height:60px;}
+.nav-logo{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;white-space:nowrap;margin-right:auto;}
+.nav-logo span{color:var(--text-dim);font-weight:400;}
+.nav-links{display:flex;gap:0;align-items:center;}
+.nav-link{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2.5px;font-weight:600;text-transform:uppercase;color:var(--text-dim);text-decoration:none;padding:0 14px;height:60px;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all 0.2s;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;}
+.nav-link:hover,.nav-link.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-link.cta{background:rgba(201,168,76,0.12);border:1px solid var(--border-strong);border-bottom:2px solid var(--gold);color:var(--gold);margin-left:8px;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:none;border:none;}
+.hamburger span{width:22px;height:2px;background:var(--gold);display:block;transition:all 0.3s;}
+
+/* ── SECTIONS ── */
+.page-section{display:none;position:relative;z-index:1;}
+.page-section.active{display:block;}
+
+/* ── HOME ── */
+#home{min-height:100vh;}
+.hero{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px 40px;position:relative;}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);}
+.hero-eyebrow{font-family:'Rajdhani',sans-serif;font-size:0.7rem;letter-spacing:5px;font-weight:600;color:var(--gold-dim);text-transform:uppercase;margin-bottom:20px;}
+.hero-title{font-family:'Rajdhani',sans-serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:700;line-height:1.05;color:var(--cream);letter-spacing:2px;margin-bottom:16px;}
+.hero-title .accent{color:var(--gold);}
+.hero-motto{font-size:1.15rem;font-style:italic;color:var(--text-dim);margin-bottom:40px;max-width:500px;}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-dim),var(--gold));border:none;color:var(--navy);font-family:'Rajdhani',sans-serif;font-size:0.82rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;padding:14px 34px;cursor:pointer;border-radius:2px;transition:all 0.25s;}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.3);}
+.btn-outline{background:transparent;border:1px solid var(--border-strong);color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:0.82rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;padding:14px 34px;cursor:pointer;border-radius:2px;transition:all 0.25s;}
+.btn-outline:hover{background:rgba(201,168,76,0.08);}
+
+/* mission */
+.mission{max-width:860px;margin:0 auto;padding:70px 24px;}
+.section-label{font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:4px;font-weight:600;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px;}
+.mission h2{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:22px;}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mission-item{background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:3px;padding:22px;display:flex;gap:14px;align-items:flex-start;}
+.mission-num{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--gold-dim);line-height:1;flex-shrink:0;width:28px;}
+.mission-text{font-size:1rem;line-height:1.6;color:var(--text-dim);}
+
+/* interest form */
+.interest-section{background:rgba(13,31,60,0.4);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:70px 24px;}
+.interest-inner{max-width:680px;margin:0 auto;}
+.interest-inner h2{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:6px;}
+.interest-inner p{color:var(--text-dim);font-style:italic;margin-bottom:30px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.form-group{display:flex;flex-direction:column;gap:7px;}
+.form-group label{font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:3px;font-weight:600;color:var(--text-dim);text-transform:uppercase;}
+.form-group input,.form-group select{background:rgba(7,18,32,0.8);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;padding:11px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;width:100%;}
+.form-group input:focus,.form-group select:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.1);}
+.form-group select option{background:var(--navy-mid);}
+
+/* track cards */
+.tracks{max-width:900px;margin:0 auto;padding:70px 24px;}
+.tracks h2{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:6px;}
+.tracks>p{color:var(--text-dim);font-style:italic;margin-bottom:32px;}
+.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.track-card{background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:3px;padding:36px 30px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.track-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);transform:scaleX(0);transition:transform 0.3s;}
+.track-card:hover{border-color:var(--gold-dim);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.3);}
+.track-card:hover::before{transform:scaleX(1);}
+.track-icon{font-size:2.5rem;margin-bottom:16px;display:block;}
+.track-card h3{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:8px;}
+.track-card p{color:var(--text-dim);font-size:0.95rem;line-height:1.5;}
+.track-exams{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.track-exam-tag{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);border-radius:2px;color:var(--text-dim);}
+
+/* admit cards */
+.admit-section{max-width:900px;margin:0 auto;padding:0 24px 70px;}
+.admit-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px;}
+.admit-card{background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:3px;overflow:hidden;text-decoration:none;display:block;transition:all 0.25s;}
+.admit-card:hover{border-color:var(--gold-dim);transform:translateY(-2px);}
+.admit-img{width:100%;height:160px;object-fit:cover;display:block;background:var(--navy-light);}
+.admit-body{padding:18px 20px;}
+.admit-body h4{font-family:'Rajdhani',sans-serif;font-size:1rem;letter-spacing:2px;font-weight:700;color:var(--cream);margin-bottom:4px;}
+.admit-body p{font-size:0.9rem;color:var(--text-dim);}
+.syllabus-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;}
+.syllabus-link{display:inline-flex;align-items:center;gap:8px;font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:10px 20px;border:1px solid var(--border-strong);border-radius:2px;transition:all 0.2s;}
+.syllabus-link:hover{background:rgba(201,168,76,0.08);}
+
+/* ── EXAM PAGES ── */
+.exam-page{max-width:900px;margin:0 auto;padding:50px 24px 80px;}
+.exam-hero{background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:3px;padding:40px;margin-bottom:36px;position:relative;overflow:hidden;}
+.exam-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.exam-hero h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:8px;}
+.exam-hero .sub{color:var(--gold-dim);font-style:italic;font-size:1.1rem;margin-bottom:20px;}
+.exam-hero .motto{font-style:italic;color:var(--text-dim);border-left:2px solid var(--gold-dim);padding-left:16px;font-size:1.05rem;}
+
+/* info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+.info-card{background:rgba(7,18,32,0.6);border:1px solid var(--border);border-radius:3px;padding:22px;}
+.info-card h3{font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:3px;font-weight:600;text-transform:uppercase;color:var(--gold-dim);margin-bottom:14px;}
+.info-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(201,168,76,0.08);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:0.88rem;color:var(--text-dim);}
+.info-val{font-size:0.88rem;color:var(--cream);text-align:right;max-width:60%;}
+
+.exam-section{margin-bottom:32px;}
+.exam-section h2{font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:3px;font-weight:700;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.exam-section p,.exam-section li{font-size:1.02rem;line-height:1.75;color:var(--cream-dark);margin-bottom:6px;}
+.exam-section ul{padding-left:20px;}
+.exam-section li{list-style:none;padding-left:16px;position:relative;}
+.exam-section li::before{content:'›';position:absolute;left:0;color:var(--gold-dim);}
+
+/* table */
+.exam-table{width:100%;border-collapse:collapse;font-size:0.92rem;margin:14px 0;}
+.exam-table th{background:rgba(201,168,76,0.12);color:var(--gold);font-family:'Rajdhani',sans-serif;letter-spacing:2px;font-size:0.72rem;text-transform:uppercase;padding:10px 14px;text-align:left;border:1px solid var(--border);}
+.exam-table td{padding:9px 14px;border:1px solid rgba(201,168,76,0.08);color:var(--cream-dark);}
+.exam-table tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+
+/* phase badges */
+.phases{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.phase{padding:8px 18px;border:1px solid var(--border);border-radius:2px;font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;color:var(--text-dim);}
+.phase.p1{border-color:rgba(74,158,255,0.4);color:#4a9eff;}
+.phase.p2{border-color:rgba(46,204,113,0.4);color:#2ecc71;}
+.phase.p3{border-color:rgba(201,168,76,0.6);color:var(--gold);}
+
+/* back btn */
+.back-bar{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
+.back-btn{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;padding:8px 16px;cursor:pointer;border-radius:2px;transition:all 0.2s;}
+.back-btn:hover{border-color:var(--gold);color:var(--gold);}
+.breadcrumb{font-family:'Rajdhani',sans-serif;font-size:0.72rem;letter-spacing:1.5px;color:var(--text-dim);}
+.breadcrumb span{color:var(--gold-dim);}
+
+/* ── EXAM INDEX pages ── */
+.index-page{max-width:760px;margin:0 auto;padding:50px 24px 80px;}
+.index-page h1{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:6px;}
+.index-page>p{color:var(--text-dim);font-style:italic;margin-bottom:36px;}
+.exam-list{display:flex;flex-direction:column;gap:12px;}
+.exam-list-item{background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:3px;padding:22px 26px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:space-between;}
+.exam-list-item:hover{border-color:var(--gold-dim);background:rgba(13,31,60,0.8);}
+.exam-list-item h3{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1.5px;color:var(--cream);}
+.exam-list-item p{font-size:0.9rem;color:var(--text-dim);margin-top:2px;}
+.arrow{color:var(--gold-dim);font-size:1.2rem;}
+
+/* ── AI COACH ── */
+#coach .coach-wrap{max-width:900px;margin:0 auto;padding:50px 24px 80px;}
+.coach-hero{text-align:center;padding:60px 0 50px;}
+.coach-hero h1{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:12px;}
+.coach-hero h1 span{color:var(--gold);}
+.coach-hero p{font-size:1.1rem;color:var(--text-dim);font-style:italic;max-width:500px;margin:0 auto 40px;}
+
+/* steps */
+.steps{display:flex;margin-bottom:44px;position:relative;}
+.steps::before{content:'';position:absolute;bottom:3px;left:10%;right:10%;height:1px;background:var(--border);z-index:0;}
+.step{flex:1;text-align:center;position:relative;z-index:1;}
+.step-dot{width:10px;height:10px;border-radius:50%;background:var(--navy-light);border:1px solid var(--border);margin:0 auto 8px;transition:all 0.3s;}
+.step.active .step-dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(201,168,76,0.5);}
+.step.done .step-dot{background:var(--green);border-color:#2ecc71;}
+.step-lbl{font-family:'Rajdhani',sans-serif;font-size:0.65rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;color:var(--text-dim);}
+.step.active .step-lbl{color:var(--gold);}
+.step.done .step-lbl{color:#2ecc71;}
+
+/* card */
+.card{background:rgba(13,31,60,0.6);border:1px solid var(--border);border-radius:4px;padding:36px;position:relative;overflow:hidden;margin-bottom:0;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+
+/* track btns */
+.track-btns{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.track-btn{border:1px solid var(--border);background:rgba(7,18,32,0.5);color:var(--text-dim);padding:28px 20px;border-radius:3px;cursor:pointer;transition:all 0.25s;text-align:center;font-family:'Rajdhani',sans-serif;font-size:1.05rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;}
+.track-btn .t-icon{font-size:2rem;display:block;margin-bottom:8px;}
+.track-btn .t-sub{font-size:0.65rem;color:var(--text-dim);letter-spacing:2px;font-weight:400;display:block;margin-top:4px;font-family:'Crimson Pro',serif;font-style:italic;}
+.track-btn:hover,.track-btn.sel{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);box-shadow:0 0 20px rgba(201,168,76,0.08);}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.chip{padding:7px 14px;border:1px solid var(--border);border-radius:2px;background:transparent;color:var(--text-dim);font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:1.5px;font-weight:600;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
+.chip:hover,.chip.sel{border-color:var(--gold);color:var(--gold-light);background:rgba(201,168,76,0.1);}
+
+/* form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px;}
+.fg{display:flex;flex-direction:column;gap:7px;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:3px;font-weight:600;color:var(--text-dim);text-transform:uppercase;}
+.fg input,.fg select,.fg textarea{background:rgba(7,18,32,0.8);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;padding:11px 14px;outline:none;transition:border-color 0.2s;width:100%;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.fg select option{background:var(--navy-mid);}
+.fg textarea{resize:vertical;min-height:72px;}
+
+/* plan */
+.plan-content{font-size:1.02rem;line-height:1.8;color:var(--cream-dark);white-space:pre-wrap;}
+.plan-content h2,.plan-content h3{font-family:'Rajdhani',sans-serif;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin:22px 0 8px;font-size:0.95rem;}
+.plan-content strong{color:var(--cream);}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1px solid #2ecc71;border-radius:2px;background:rgba(26,107,60,0.15);color:#2ecc71;font-family:'Rajdhani',sans-serif;font-size:0.68rem;letter-spacing:2px;font-weight:600;text-transform:uppercase;}
+
+/* chat */
+.chat-win{background:rgba(7,18,32,0.5);border:1px solid var(--border);border-radius:3px;height:380px;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
+.msg{display:flex;gap:10px;align-items:flex-start;animation:msgIn 0.3s ease;}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse;}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid var(--border);}
+.av.coach{background:rgba(201,168,76,0.12);border-color:var(--gold-dim);color:var(--gold);}
+.av.you{background:rgba(74,158,255,0.1);border-color:rgba(74,158,255,0.3);color:#4a9eff;}
+.bubble{max-width:78%;padding:11px 15px;border-radius:3px;font-size:0.97rem;line-height:1.6;border:1px solid var(--border);}
+.msg.coach .bubble{background:rgba(13,31,60,0.8);color:var(--cream-dark);}
+.msg.user .bubble{background:rgba(74,158,255,0.07);color:var(--cream);border-color:rgba(74,158,255,0.2);}
+.chat-row{display:flex;gap:10px;margin-top:12px;}
+.chat-row input{flex:1;padding:12px 14px;background:rgba(7,18,32,0.8);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;outline:none;}
+.chat-row input:focus{border-color:var(--gold);}
+.typing-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold-dim);margin:0 2px;animation:bounce 1.2s infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.5}40%{transform:translateY(-6px);opacity:1}}
+
+/* loader */
+.loader{display:flex;align-items:center;gap:12px;color:var(--text-dim);font-style:italic;padding:16px 0;}
+.spin{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{background:rgba(139,32,32,0.15);border:1px solid rgba(139,32,32,0.4);border-radius:3px;padding:12px 16px;color:#e74c3c;font-size:0.9rem;margin-top:12px;}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:32px;text-align:center;}
+footer p{font-family:'Rajdhani',sans-serif;font-size:0.7rem;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;}
+footer a{color:var(--gold-dim);text-decoration:none;}
+
+/* ── UTILITIES ── */
+.hidden{display:none!important;}
+.flex{display:flex;}
+.gap-3{gap:12px;}
+.items-center{align-items:center;}
+.mt-4{margin-top:16px;}
+.mt-6{margin-top:24px;}
+.divider{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:28px 0;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  nav{padding:0 16px;}
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(7,18,32,0.97);flex-direction:column;padding:20px 0;border-bottom:1px solid var(--border);z-index:200;}
+  .nav-links.open{display:flex;}
+  .nav-link{height:auto;padding:14px 24px;border-bottom:none;border-left:3px solid transparent;}
+  .nav-link:hover,.nav-link.active{border-left-color:var(--gold);border-bottom:none;}
+  .nav-link.cta{margin:8px 24px;border:1px solid var(--border-strong);}
+  .hamburger{display:flex;}
+  .hero-title{font-size:2.4rem;}
+  .mission-grid,.track-grid,.info-grid,.form-row,.track-btns,.form-grid,.admit-grid{grid-template-columns:1fr;}
+  .fg.full{grid-column:1;}
+  .exam-hero{padding:24px 20px;}
+  .card{padding:22px 18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">SERVE <span>NATION</span></div>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link active" onclick="showSection('home')">Home</button>
+      <button class="nav-link" onclick="showSection('civil-index')">Civil Services</button>
+      <button class="nav-link" onclick="showSection('defence-index')">Armed Forces</button>
+      <button class="nav-link cta" onclick="showSection('coach')">🎖 AI Coach</button>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════ HOME ═══════════════════════════ -->
+<section class="page-section active" id="home">
+
+  <div class="hero">
+    <p class="hero-eyebrow">India's Premier Defence & Civil Services Resource</p>
+    <h1 class="hero-title">SERVE <span class="accent">NATION</span><br>CAREER PORTAL</h1>
+    <p class="hero-motto">"Where Ambition Meets Duty — Your Journey Begins Here."</p>
+    <div class="hero-ctas">
+      <button class="btn-gold" onclick="showSection('coach')">🎖 Get Your AI Coach</button>
+      <button class="btn-outline" onclick="showSection('civil-index')">Explore Civil Services</button>
+      <button class="btn-outline" onclick="showSection('defence-index')">Explore Armed Forces</button>
+    </div>
+  </div>
+
+  <div class="mission">
+    <p class="section-label">Our Mission</p>
+    <h2>Why We Built This</h2>
+    <div class="mission-grid">
+      <div class="mission-item"><div class="mission-num">01</div><div class="mission-text">Raise awareness about the diverse paths to serve the nation with honour.</div></div>
+      <div class="mission-item"><div class="mission-num">02</div><div class="mission-text">Simplify the journey by bringing accurate information in one place.</div></div>
+      <div class="mission-item"><div class="mission-num">03</div><div class="mission-text">Support aspirants with exam guidance, eligibility details, and career insights.</div></div>
+      <div class="mission-item"><div class="mission-num">04</div><div class="mission-text">Inspire leadership and a sense of responsibility towards the nation.</div></div>
+      <div class="mission-item"><div class="mission-num">05</div><div class="mission-text">Bridge the gap between ambition and the right resources for every aspirant.</div></div>
+      <div class="mission-item"><div class="mission-num">06</div><div class="mission-text">When youth rise with knowledge, the nation rises with pride.</div></div>
+    </div>
+  </div>
+
+  <div class="interest-section">
+    <div class="interest-inner">
+      <p class="section-label">Join Us</p>
+      <h2>Register Your Interest</h2>
+      <p>Stay informed about exam notifications, updates, and coaching resources.</p>
+      <div class="form-row">
+        <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your full name"></div>
+        <div class="form-group"><label>Aim / Goal</label><input type="text" placeholder="e.g. IAS, CDS, NDA..."></div>
+        <div class="form-group"><label>Target Year</label>
+          <select><option value="">Select year</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option></select>
+        </div>
+        <div class="form-group"><label>Mobile Number</label><input type="tel" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="form-row" style="grid-template-columns:1fr;">
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+      </div>
+      <div class="mt-4">
+        <button class="btn-gold" onclick="alert('Interest registered! We will be in touch.')">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tracks">
+    <p class="section-label">Explore Paths</p>
+    <h2>Choose Your Track</h2>
+    <p>Two great paths to serve India — find yours.</p>
+    <div class="track-grid">
+      <div class="track-card" onclick="showSection('civil-index')">
+        <span class="track-icon">🏛️</span>
+        <h3>Civil Services</h3>
+        <p>Govern, administer, and shape India's policies at the highest levels of public service.</p>
+        <div class="track-exams">
+          <span class="track-exam-tag">IAS/IPS</span><span class="track-exam-tag">IFS</span><span class="track-exam-tag">CAPF</span><span class="track-exam-tag">IFoS</span><span class="track-exam-tag">State PSC</span>
+        </div>
+      </div>
+      <div class="track-card" onclick="showSection('defence-index')">
+        <span class="track-icon">🎖️</span>
+        <h3>Armed Forces</h3>
+        <p>Defend the nation with honour, lead with courage, serve with the Indian Armed Forces.</p>
+        <div class="track-exams">
+          <span class="track-exam-tag">CDS</span><span class="track-exam-tag">NDA</span><span class="track-exam-tag">AFCAT</span><span class="track-exam-tag">Navy SSC</span><span class="track-exam-tag">TGC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admit-section">
+    <p class="section-label">Quick Access</p>
+    <h2 style="font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:2px;color:var(--cream);margin-bottom:6px;">Official Admit Cards & Syllabus</h2>
+    <p style="color:var(--text-dim);font-style:italic;">Direct links to official government resources.</p>
+    <div class="admit-grid">
+      <a class="admit-card" href="https://upsc.gov.in/e-admit-cards" target="_blank">
+        <div class="admit-img" style="background:linear-gradient(135deg,#0d1f3c,#162d54);display:flex;align-items:center;justify-content:center;font-size:3rem;">🏛️</div>
+        <div class="admit-body"><h4>Civil Admit Card</h4><p>UPSC official e-admit cards portal</p></div>
+      </a>
+      <a class="admit-card" href="https://www.joinindianarmy.nic.in" target="_blank">
+        <div class="admit-img" style="background:linear-gradient(135deg,#0d1f3c,#162d54);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎖️</div>
+        <div class="admit-body"><h4>Army Admit Card</h4><p>Join Indian Army official portal</p></div>
+      </a>
+    </div>
+    <div class="syllabus-links">
+      <a class="syllabus-link" href="https://upsc.gov.in/examinations/revised-syllabus-scheme" target="_blank">📄 Civil Services Syllabus</a>
+      <a class="syllabus-link" href="https://upsc.gov.in/sites/default/files/Notif-NDA-NA-II-2025-Engli.pdf" target="_blank">📄 Armed Forces Syllabus</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════ CIVIL INDEX ═══════════════════════════ -->
+<section class="page-section" id="civil-index">
+  <div class="index-page">
+    <div class="back-bar"><button class="back-btn" onclick="showSection('home')">← Home</button><span class="breadcrumb">Home <span>›</span> Civil Services</span></div>
+    <p class="section-label">Civil Services Track</p>
+    <h1>Civil Services Examinations</h1>
+    <p>Choose the specific exam you want to explore.</p>
+    <div class="exam-list">
+      <div class="exam-list-item" onclick="showExam('ias')"><div><h3>UPSC Civil Services (IAS / IPS)</h3><p>India's premier exam for IAS, IPS, IFS, IRS & allied services</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('capf')"><div><h3>CAPF (Assistant Commandant)</h3><p>Central Armed Police Forces — BSF, CRPF, CISF, SSB, ITBP</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('ifos')"><div><h3>Indian Forest Service (IFoS)</h3><p>Forest management and conservation — UPSC conducted</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('statepsc')"><div><h3>State PSC / PCS</h3><p>Provincial Civil Services for state administration</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('ifs')"><div><h3>Indian Foreign Service (IFS)</h3><p>Diplomatic service — represent India on the world stage</p></div><span class="arrow">›</span></div>
+    </div>
+    <div class="mt-6"><button class="btn-gold" onclick="showSection('coach')">🎖 Get AI Coaching for Civil Services</button></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ DEFENCE INDEX ═══════════════════════════ -->
+<section class="page-section" id="defence-index">
+  <div class="index-page">
+    <div class="back-bar"><button class="back-btn" onclick="showSection('home')">← Home</button><span class="breadcrumb">Home <span>›</span> Armed Forces</span></div>
+    <p class="section-label">Defence Track</p>
+    <h1>Armed Forces Examinations</h1>
+    <p>Choose the specific exam you want to explore.</p>
+    <div class="exam-list">
+      <div class="exam-list-item" onclick="showExam('cds')"><div><h3>CDS — Combined Defence Services</h3><p>IMA, OTA, INA, AFA — officer entry via UPSC</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('afcat')"><div><h3>AFCAT — Air Force Common Admission Test</h3><p>Indian Air Force officer entry — Flying & Ground Duty</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('ssctech')"><div><h3>SSC (Tech) — Army Technical Entry</h3><p>Technical officer entry for engineering graduates</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('ncc')"><div><h3>NCC Special Entry</h3><p>Entry for NCC 'C' certificate holders into the Army</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('navy')"><div><h3>Navy SSC — Short Service Commission</h3><p>Indian Navy officer entry — multiple branches</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('terrArmy')"><div><h3>Territorial Army</h3><p>Part-time soldiering for employed civilians</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('tgc')"><div><h3>TGC — Technical Graduate Course (Army)</h3><p>Permanent Commission for engineering graduates</p></div><span class="arrow">›</span></div>
+      <div class="exam-list-item" onclick="showExam('coastguard')"><div><h3>Coastal Guard</h3><p>Indian Coast Guard officer and navik entry</p></div><span class="arrow">›</span></div>
+    </div>
+    <div class="mt-6"><button class="btn-gold" onclick="showSection('coach')">🎖 Get AI Coaching for Armed Forces</button></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ EXAM DETAIL PAGES ═══════════════════════════ -->
+<section class="page-section" id="exam-detail">
+  <div class="exam-page" id="examContent"></div>
+</section>
+
+<!-- ═══════════════════════════ AI COACH ═══════════════════════════ -->
+<section class="page-section" id="coach">
+<div class="coach-wrap">
+  <div class="coach-hero">
+    <p class="section-label">Your Personal Coach</p>
+    <h1>Build Your <span>Mission Plan</span></h1>
+    <p>Tell us your goal. Get a complete AI-powered preparation roadmap — schedule, tasks, and coaching built around you.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step active" id="cStep1"><div class="step-dot"></div><div class="step-lbl">Track</div></div>
+    <div class="step" id="cStep2"><div class="step-dot"></div><div class="step-lbl">Profile</div></div>
+    <div class="step" id="cStep3"><div class="step-dot"></div><div class="step-lbl">Plan</div></div>
+    <div class="step" id="cStep4"><div class="step-dot"></div><div class="step-lbl">Coach</div></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="card" id="cTrackCard">
+    <p class="section-label">Step 01 — Choose Track & Exam</p>
+    <h2 style="font-family:'Rajdhani',sans-serif;font-size:1.4rem;color:var(--cream);margin-bottom:20px;">What are you preparing for?</h2>
+    <div class="track-btns">
+      <button class="track-btn" id="cCivilBtn" onclick="cSelectTrack('civil')">
+        <span class="t-icon">🏛️</span>Civil Services<span class="t-sub">IAS · IPS · IFS · CAPF · State PSC</span>
+      </button>
+      <button class="track-btn" id="cDefBtn" onclick="cSelectTrack('defence')">
+        <span class="t-icon">🎖️</span>Defence Forces<span class="t-sub">CDS · NDA · AFCAT · Navy · TGC</span>
+      </button>
+    </div>
+    <div id="cExamPicker" class="hidden">
+      <p class="section-label" style="margin-bottom:10px;">Select Specific Exam</p>
+      <div class="chips" id="cChips"></div>
+    </div>
+    <div class="mt-6"><button class="btn-gold" onclick="cGoStep2()" id="cStep1Btn" disabled>Continue →</button></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="card hidden" id="cProfileCard">
+    <p class="section-label">Step 02 — Your Profile</p>
+    <h2 style="font-family:'Rajdhani',sans-serif;font-size:1.4rem;color:var(--cream);margin-bottom:6px;">Tell us about yourself</h2>
+    <p style="color:var(--text-dim);font-style:italic;margin-bottom:4px;">The more honest you are, the better your plan.</p>
+    <div class="form-grid">
+      <div class="fg"><label>Full Name</label><input type="text" id="cName" placeholder="e.g. Rythm Singh"></div>
+      <div class="fg"><label>Target Attempt Year</label>
+        <select id="cYear"><option value="">Select</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option></select>
+      </div>
+      <div class="fg"><label>Education / Status</label>
+        <select id="cEdu"><option value="">Select</option><option>12th Pass</option><option>Pursuing Graduation</option><option>Graduate</option><option>Post-Graduate</option><option>Working Professional</option></select>
+      </div>
+      <div class="fg"><label>Daily Study Hours</label>
+        <select id="cHours"><option value="">Select</option><option>1–2 hours</option><option>3–4 hours</option><option>5–6 hours</option><option>7–8 hours</option><option>Full-time (8+ hours)</option></select>
+      </div>
+      <div class="fg full"><label>Weak Areas / Subjects</label>
+        <textarea id="cWeak" placeholder="e.g. Mathematics, History, English comprehension..."></textarea>
+      </div>
+      <div class="fg full"><label>Strong Areas / Subjects</label>
+        <textarea id="cStrong" placeholder="e.g. Current Affairs, Geography, Reasoning..."></textarea>
+      </div>
+      <div class="fg full"><label>Previous Attempts?</label>
+        <textarea id="cPrev" placeholder="e.g. First attempt. Or: Gave CDS I 2025, cleared written, failed SSB." style="min-height:60px;"></textarea>
+      </div>
+    </div>
+    <div id="cProfileErr"></div>
+    <div class="flex gap-3 items-center mt-6">
+      <button class="btn-outline" onclick="cGoBack(1)">← Back</button>
+      <button class="btn-gold" onclick="cGenPlan()">Generate My Plan ⚡</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="card hidden" id="cPlanCard">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+      <div><p class="section-label">Step 03</p><h2 style="font-family:'Rajdhani',sans-serif;font-size:1.4rem;color:var(--cream);">Your Preparation Roadmap</h2></div>
+      <span class="plan-badge hidden" id="cPlanBadge">✓ AI Generated</span>
+    </div>
+    <div class="loader" id="cLoader"><div class="spin"></div>Building your personalised plan…</div>
+    <div class="plan-content hidden" id="cPlanOut"></div>
+    <div id="cPlanErr"></div>
+    <div class="flex gap-3 items-center mt-6 hidden" id="cPlanActions">
+      <button class="btn-outline" onclick="cGoBack(2)">← Redo Profile</button>
+      <button class="btn-gold" onclick="cGoChat()">Talk to Your Coach →</button>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="card hidden" id="cChatCard">
+    <div style="margin-bottom:18px;">
+      <p class="section-label">Step 04</p>
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:1.4rem;color:var(--cream);">Your AI Coach</h2>
+      <p style="color:var(--text-dim);font-style:italic;">Ask anything — today's tasks, strategy, doubts, motivation.</p>
+    </div>
+    <div class="chat-win" id="cChatWin"></div>
+    <div class="chat-row">
+      <input type="text" id="cChatIn" placeholder="e.g. What should I study today?" onkeydown="if(event.key==='Enter')cSend()">
+      <button class="btn-gold" onclick="cSend()" id="cSendBtn">Send</button>
+    </div>
+    <div class="mt-4"><button class="btn-outline" onclick="cGoBack(3)">← Back to Plan</button></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <p>© 2025 Serve Nation Career Portal &nbsp;·&nbsp; Built with purpose &nbsp;·&nbsp; <a href="https://upsc.gov.in" target="_blank">upsc.gov.in</a></p>
+</footer>
+
+<script>
+// ════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════
+let currentExamParent = 'civil-index';
+
+function showSection(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const map = {'home':0,'civil-index':1,'defence-index':2,'coach':3,'exam-detail':-1};
+  if(map[id] >= 0) document.querySelectorAll('.nav-link')[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  closeMenu();
+}
+
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('navLinks').classList.remove('open');
+}
+
+// ════════════════════════════════════════════
+// EXAM DATA
+// ════════════════════════════════════════════
+const examData = {
+  ias: {
+    parent:'civil-index',
+    title:'UPSC Civil Services (IAS/IPS)',
+    sub:'Path to Public Service — IAS / IPS / IFS / IRS & more',
+    motto:'"Serve with integrity, lead with wisdom — persistence turns aspiration into service."',
+    basics:[
+      ['Conducting Body','UPSC'],['Frequency','Annual'],['Mode','Prelims + Mains + Interview'],
+      ['Age (General)','21–32 years'],['Age (OBC)','21–35 years'],['Age (SC/ST)','21–37 years'],
+      ['Education','Graduate / Final Year'],['Attempts (Gen)','6'],['Attempts (OBC)','9'],['Attempts (SC/ST)','Unlimited'],
+      ['Notification','February'],['Prelims','June'],['Mains','September–October'],
+    ],
+    stages:[
+      {label:'Prelims',cls:'p1',desc:'2 objective papers (GS I + CSAT qualifying). GS I: 200 marks, CSAT: 200 marks (qualifying only).'},
+      {label:'Mains',cls:'p2',desc:'9 papers. Essay (250), GS I–IV (250 each), 2 Optional papers (250 each), 2 Language papers (qualifying). Total: 1750 marks.'},
+      {label:'Interview',cls:'p3',desc:'Personality Test: 275 marks. Final merit = Mains + Interview.'},
+    ],
+    syllabus:'GS Paper I: History, Geography, Polity, Society.\nGS Paper II: Governance, Constitution, IR, Social Justice.\nGS Paper III: Economy, Tech, Environment, Security.\nGS Paper IV: Ethics, Integrity, Aptitude.\nCurrent Affairs: National & International events.\nOptional Subject: Any one from UPSC approved list.',
+    resources:'NCERTs (6–12), Laxmikanth (Polity), Ramesh Singh (Economy), Spectrum (Modern History), Shankar IAS (Environment), Vision IAS / Drishti notes, The Hindu newspaper daily.',
+    coaching:'Vision IAS, Drishti IAS, Career Launcher, ALS IAS, Vajiram & Ravi, StudyIQ (online), Unacademy (online).',
+  },
+  cds: {
+    parent:'defence-index',
+    title:'CDS — Combined Defence Services',
+    sub:'IMA · OTA · INA · AFA — Officer Entry via UPSC',
+    motto:'"Discipline, duty and courage — prepare today to lead tomorrow."',
+    basics:[
+      ['Conducting Body','UPSC'],['Frequency','Twice a year (CDS I & II)'],['Mode','Offline written + SSB'],
+      ['Age (IMA)','19–24 years'],['Age (OTA)','19–25 years'],['Age (INA)','19–22 years'],['Age (AFA)','20–24 years'],
+      ['Education (IMA/OTA/INA)','Graduation (any stream)'],['Education (AFA Flying)','Degree with Physics & Maths at 10+2'],
+      ['Application','Online via upsconline.nic.in'],['Notification','Typically Jan & Jun–Jul'],
+    ],
+    stages:[
+      {label:'Written Exam',cls:'p1',desc:'IMA/INA/AFA: 3 papers — English (100), GK (100), Maths (100). OTA: 2 papers — English (100) + GK (100). Objective type, 2 hrs each.'},
+      {label:'SSB Interview',cls:'p2',desc:'5-day process: Day 1 Screening (OIR + PPDT), Day 2 Psychology Tests (TAT/WAT/SRT), Day 3–4 GTO Tasks + Personal Interview, Day 5 Conference.'},
+      {label:'Medical',cls:'p3',desc:'Detailed medical exam as per service-specific standards. Mandatory before final selection and joining.'},
+    ],
+    syllabus:'English: Comprehension, vocabulary, grammar, sentence correction.\nGeneral Knowledge: Current affairs, History, Geography, Polity, Economy, Science & Tech, Defence topics.\nMathematics (IMA/INA/AFA): Arithmetic, Algebra, Trigonometry, Geometry, Statistics, Probability.',
+    resources:'Pathfinder for CDS & AFCAT, Lucent\'s General Knowledge, RS Aggarwal (Quantitative Aptitude), Wren & Martin (English), UPSC CDS previous year papers.',
+    coaching:'Minerva Academy Chandigarh, Olive Greens, Chandigarh Academy, Major Kalshi Classes (online), Defence Wallah (YouTube).',
+  },
+  afcat: {
+    parent:'defence-index',
+    title:'AFCAT — Air Force Common Admission Test',
+    sub:'Indian Air Force Officer Entry — Flying & Ground Duty Branches',
+    motto:'"Touch the sky with glory — IAF ka raasta shuru hota hai yahaan se."',
+    basics:[
+      ['Conducting Body','Indian Air Force (IAF)'],['Frequency','Twice a year (AFCAT 1 & 2)'],['Mode','Online CBT + AFSB'],
+      ['Age (Flying)','20–24 years'],['Age (Ground Duty Tech)','20–26 years'],['Age (Ground Duty Non-Tech)','20–23 years'],
+      ['Education (Flying/GD Tech)','Graduation with Physics & Maths at 10+2 or B.Tech'],
+      ['Education (GD Non-Tech)','Graduation (any stream)'],['Application','Via careerindianairforce.cdac.in'],
+    ],
+    stages:[
+      {label:'AFCAT Written',cls:'p1',desc:'Online CBT: 100 questions, 300 marks, 2 hours. Sections: GK, English, Numerical Ability, Reasoning & Military Aptitude.'},
+      {label:'EKT (Tech only)',cls:'p2',desc:'Engineering Knowledge Test for technical branch candidates: 50 questions, 150 marks, 45 minutes.'},
+      {label:'AFSB',cls:'p3',desc:'Air Force Selection Board: 5-day process similar to SSB — psychological tests, GTO tasks, personal interview, conference.'},
+    ],
+    syllabus:'General Awareness: History, Geography, Civics, Politics, Economy, Science & Tech, Sports, Defence.\nEnglish: Reading comprehension, grammar, vocabulary.\nNumerical: Simple maths, ratios, profit/loss, time-distance.\nReasoning: Analogies, pattern recognition, distance/direction.',
+    resources:'Arihant AFCAT guide, Pathfinder for CDS & AFCAT, Lucent GK, standard 10+2 Maths & Physics (for EKT), previous AFCAT papers.',
+    coaching:'Major Kalshi Classes, Defence Wallah, Cavalier Defence Academy, online mock test platforms.',
+  },
+  capf: {
+    parent:'civil-index',
+    title:'CAPF (AC) — Assistant Commandant',
+    sub:'Central Armed Police Forces — BSF · CRPF · CISF · ITBP · SSB',
+    motto:'"Guard the frontiers, serve the nation — every post is a posting of honour."',
+    basics:[
+      ['Conducting Body','UPSC'],['Frequency','Annual'],['Mode','Written + Physical + Interview/Personality Test'],
+      ['Age','20–25 years'],['Education','Graduation (any stream)'],
+      ['Application','Online via upsconline.nic.in'],['Notification','Typically April–May'],
+    ],
+    stages:[
+      {label:'Paper I',cls:'p1',desc:'Objective: General Ability & Intelligence — 250 marks, 2 hrs. Covers GK, Current Affairs, Reasoning, Numerical.'},
+      {label:'Paper II',cls:'p2',desc:'Descriptive: General Studies, Essay & Comprehension — 200 marks, 3 hrs. Tests writing ability and analytical skills.'},
+      {label:'PET/PST & Interview',cls:'p3',desc:'Physical Efficiency Test, Physical Standard Test, then Medical Exam and Personality Test/Interview (150 marks).'},
+    ],
+    syllabus:'Paper I: Current events, Indian polity, economy, history, geography, science, reasoning, basic maths.\nPaper II: Essay writing, précis, comprehension, general studies covering society, governance, IR.',
+    resources:'Arihant CAPF guide, Lucent GK, previous UPSC CAPF papers, The Hindu for current affairs, Laxmikanth (Polity).',
+    coaching:'Vision IAS, Career Launcher, Major Kalshi Classes for physical preparation guidance, online platforms.',
+  },
+  ifos: {
+    parent:'civil-index',
+    title:'Indian Forest Service (IFoS)',
+    sub:'Forest Management & Conservation — Conducted by UPSC',
+    motto:'"The forest is not just a resource — it is a responsibility."',
+    basics:[
+      ['Conducting Body','UPSC'],['Frequency','Annual (combined prelims with Civil Services)'],
+      ['Mode','Prelims (common with UPSC CSE) + IFoS Mains + Personality Test'],
+      ['Age','21–32 years (relaxation for reserved categories)'],
+      ['Education','Degree in Animal Husbandry, Botany, Chemistry, Geology, Maths, Physics, Statistics, Zoology, Agriculture, Forestry, or Engineering'],
+    ],
+    stages:[
+      {label:'Prelims',cls:'p1',desc:'Common with UPSC Civil Services Prelims (GS I + CSAT). Qualifying stage for IFoS Mains.'},
+      {label:'Mains',cls:'p2',desc:'6 papers: 2 compulsory (GS + English) + 2 optional subjects (2 papers each). Total: 1400 marks.'},
+      {label:'Personality Test',cls:'p3',desc:'Interview: 300 marks. Assesses personality, communication, and domain knowledge.'},
+    ],
+    syllabus:'Optional subjects include: Botany, Zoology, Chemistry, Physics, Agriculture, Forestry, Mathematics, Statistics, Geology, Civil/Agricultural/Mechanical Engineering.\nGS: Environment, ecology, biodiversity, current affairs, science & tech.',
+    resources:'NCERTs (relevant science subjects), standard BSc/MSc textbooks for chosen optional, Singh & Singh Ecology, environment publications.',
+    coaching:'Vision IAS, Drishti IAS for GS component. Subject-specific coaching for optional papers.',
+  },
+  statepsc: {
+    parent:'civil-index',
+    title:'State PSC / PCS',
+    sub:'Provincial Civil Services — State-Level Administration',
+    motto:'"Serve your state, serve your people — local governance is the backbone of India."',
+    basics:[
+      ['Conducting Body','Respective State Public Service Commission (HPSC, UPPSC, BPSC, etc.)'],
+      ['Frequency','Annual / As notified by state'],
+      ['Mode','Prelims + Mains + Interview (varies by state)'],
+      ['Age','21–40 years (varies by state and category)'],
+      ['Education','Graduation from recognised university'],
+    ],
+    stages:[
+      {label:'Prelims',cls:'p1',desc:'Objective paper(s) — GS and state-specific knowledge. Qualifying for Mains.'},
+      {label:'Mains',cls:'p2',desc:'Descriptive papers — GS, Hindi/Regional language, optional subject. Marks vary by state commission.'},
+      {label:'Interview',cls:'p3',desc:'Personality test/viva voce. Weight varies across states (50–100 marks typically).'},
+    ],
+    syllabus:'State-specific history, geography, culture, economy, polity.\nGeneral Studies: National events, Indian history, economy, science.\nRegional language proficiency often tested.\nOptional subject as per state syllabus.',
+    resources:'State-specific guides (e.g., for UPPSC: UP GK books), Lucent GK, NCERT books, state commission previous papers, state newspapers.',
+    coaching:'State-specific coaching institutes, Vision IAS / Drishti IAS for GS, local academies in state capitals.',
+  },
+  ifs: {
+    parent:'civil-index',
+    title:'Indian Foreign Service (IFS)',
+    sub:'Diplomatic Service — Represent India on the World Stage',
+    motto:'"Diplomacy is the art of letting someone else have your way — master it."',
+    basics:[
+      ['Conducting Body','UPSC (via Civil Services Examination)'],['Frequency','Annual'],
+      ['Mode','Same as UPSC CSE — Prelims + Mains + Interview'],
+      ['Age','21–32 years (relaxation for reserved categories)'],
+      ['Education','Graduation from recognised university'],
+      ['Allocation','Based on CSE final merit + preference'],
+    ],
+    stages:[
+      {label:'UPSC CSE',cls:'p1',desc:'IFS is allocated through the Civil Services Examination. Clear CSE Prelims, Mains, and Interview.'},
+      {label:'Foundation Course',cls:'p2',desc:'Lal Bahadur Shastri National Academy of Administration (LBSNAA) foundation course alongside other civil services probationers.'},
+      {label:'FSI Training',cls:'p3',desc:'Foreign Service Institute (FSI), New Delhi — intensive training in diplomacy, international law, language, protocol, and foreign affairs.'},
+    ],
+    syllabus:'Same as UPSC Civil Services. Additionally, strong knowledge of:\nInternational Relations, India\'s foreign policy, major global institutions (UN, WTO, IMF), geopolitics, bilateral and multilateral diplomacy.',
+    resources:'UPSC CSE preparation resources + Rajiv Sikri (Challenge and Strategy for IR), Ministry of External Affairs website, The Hindu International editions, Vajiram IR notes.',
+    coaching:'Vision IAS, Vajiram & Ravi, ALS IAS — focused on GS II (Governance & IR) for IFS-specific preparation.',
+  },
+  ssctech: {
+    parent:'defence-index',
+    title:'SSC (Tech) — Technical Entry (Army)',
+    sub:'Short Service Commission for Engineering Graduates',
+    motto:'"Engineer the nation\'s defence — where technology meets valour."',
+    basics:[
+      ['Conducting Body','Indian Army (ADG Recruiting)'],['Frequency','Twice a year'],
+      ['Mode','Application + SSB + Medical (no written exam)'],
+      ['Age','20–27 years'],['Education','B.E./B.Tech in specified engineering branches'],
+      ['Commission','Short Service Commission (10 years, extendable to 14 years)'],
+    ],
+    stages:[
+      {label:'Application',cls:'p1',desc:'Apply online via joinindianarmy.nic.in. Shortlisted based on percentage in engineering — no written exam.'},
+      {label:'SSB Interview',cls:'p2',desc:'5-day SSB at one of the Selection Centres. Psychological tests, GTO tasks, personal interview, and conference.'},
+      {label:'Medical & Merit',cls:'p3',desc:'Medical examination at military hospital. Final merit based on SSB marks and engineering percentage.'},
+    ],
+    syllabus:'No written exam. SSB preparation: Current affairs, general awareness, leadership qualities, physical fitness, personality development.\nRelevant engineering branches: Civil, Mechanical, Electrical, Electronics, Computer Science, IT, etc.',
+    resources:'SSB preparation books (Major Kalshi Classes), GTO task practice, group discussion topics, technical interview preparation for your engineering branch.',
+    coaching:'Major Kalshi Classes, Cavalier Defence, Olive Greens for SSB prep. No coaching needed for written (no written test).',
+  },
+  ncc: {
+    parent:'defence-index',
+    title:'NCC Special Entry — Army',
+    sub:'Entry for NCC \'C\' Certificate Holders into the Indian Army',
+    motto:'"Unity and Discipline — the NCC way to the Indian Army."',
+    basics:[
+      ['Conducting Body','Indian Army'],['Frequency','Twice a year'],
+      ['Mode','SSB Interview + Medical (no written exam for NCC 'C' holders)'],
+      ['Age','19–25 years'],['Education','Graduation'],
+      ['NCC Requirement','\'C\' Certificate with minimum 'B' grade'],
+    ],
+    stages:[
+      {label:'Application',cls:'p1',desc:'Apply through joinindianarmy.nic.in during notification window. Eligible NCC 'C' certificate holders are shortlisted directly for SSB.'},
+      {label:'SSB',cls:'p2',desc:'5-day SSB process — same as other officer entries. Psychological tests, GTO, personal interview, conference.'},
+      {label:'Medical',cls:'p3',desc:'Medical fitness test. Commission as Lieutenant in the Indian Army upon successful completion of training at IMA/OTA.'},
+    ],
+    syllabus:'No written exam. Focus entirely on SSB preparation: personality development, leadership, current affairs, GTO tasks, group discussions, physical fitness.',
+    resources:'SSB guides, current affairs, physical fitness training. Leveraging NCC training and experience is a major advantage.',
+    coaching:'Major Kalshi Classes, Cavalier Defence Academy for SSB preparation. Previous NCC camp experience and exposure is valuable.',
+  },
+  navy: {
+    parent:'defence-index',
+    title:'Navy SSC — Short Service Commission',
+    sub:'Indian Navy Officer Entry — Multiple Branches',
+    motto:'"May God give you fair winds and following seas — your nation awaits."',
+    basics:[
+      ['Conducting Body','Indian Navy'],['Frequency','Twice a year (various notifications)'],
+      ['Mode','Written / Online Test + SSB + Medical'],
+      ['Age','Various by branch (approx. 19–25 years)'],
+      ['Education','Graduation / B.Tech (branch-specific)'],
+      ['Commission','Short Service Commission (10–14 years)'],
+    ],
+    stages:[
+      {label:'Written/CBT',cls:'p1',desc:'Branch-specific online CBT or shortlisting based on academic marks. Some entries are direct SSB without written test.'},
+      {label:'SSB',cls:'p2',desc:'5-day SSB at Naval Selection Boards (Coimbatore / Visakhapatnam / Bhopal). Navy-specific context in interviews and discussions.'},
+      {label:'Medical',cls:'p3',desc:'Medical at INS Asvini (Mumbai) or designated naval hospitals. Vision standards vary by branch (strict for pilot/aircrew).'},
+    ],
+    syllabus:'GK, Current Affairs, Maths, Science (10+2 level) for written tests.\nNaval awareness: basic knowledge of Indian Navy, ships, submarines, maritime security.\nBranch-specific technical knowledge for engineering entries.',
+    resources:'Join Indian Navy website (joinindiannavy.gov.in), Arihant Navy exam guides, Lucent GK, Physics & Maths standard texts for technical branches.',
+    coaching:'Major Kalshi Classes, Defence Wallah, local naval coaching institutes in coastal cities.',
+  },
+  terrArmy: {
+    parent:'defence-index',
+    title:'Territorial Army',
+    sub:'Part-Time Soldiering for Employed Civilians',
+    motto:'"Two callings, one nation — serve India in uniform while serving in your profession."',
+    basics:[
+      ['Conducting Body','Territorial Army Directorate, Indian Army'],['Frequency','Annual'],
+      ['Mode','Written Exam + SSB + Medical'],
+      ['Age','18–42 years'],['Education','Graduation'],
+      ['Requirement','Must be employed (gazetted officer or equivalent) or self-employed'],
+    ],
+    stages:[
+      {label:'Written Exam',cls:'p1',desc:'2 papers — Paper I: Reasoning & Elementary Maths (50+50=100 marks, 2 hrs). Paper II: GK & English (50+50=100 marks, 2 hrs).'},
+      {label:'SSB',cls:'p2',desc:'5-day SSB process at any Army Selection Centre. Same process as regular Army officer entries.'},
+      {label:'Medical',cls:'p3',desc:'Medical fitness test. Annual training camps (2 months/year minimum) after commissioning.'},
+    ],
+    syllabus:'Paper I: Logical reasoning, analytical ability, basic maths (arithmetic, algebra, geometry).\nPaper II: Current affairs, Indian history, geography, science, English comprehension and grammar.',
+    resources:'Territorial Army previous papers (Arihant guide), Lucent GK, RS Aggarwal Reasoning, Maths standard books.',
+    coaching:'Regular SSB coaching institutes (Major Kalshi Classes, Cavalier). Written exam can be self-prepared.',
+  },
+  tgc: {
+    parent:'defence-index',
+    title:'TGC — Technical Graduate Course (Army)',
+    sub:'Permanent Commission for Engineering Graduates',
+    motto:'"Permanent commitment to the nation — engineer your destiny in olive green."',
+    basics:[
+      ['Conducting Body','Indian Army (ADG Recruiting)'],['Frequency','Twice a year'],
+      ['Mode','Application + SSB + Medical (no written exam)'],
+      ['Age','20–27 years'],['Education','B.E./B.Tech final year or passed'],
+      ['Commission','Permanent Commission in the Indian Army'],
+    ],
+    stages:[
+      {label:'Shortlisting',cls:'p1',desc:'Based on academic performance in engineering. Apply at joinindianarmy.nic.in. No written exam — shortlisted directly for SSB.'},
+      {label:'SSB',cls:'p2',desc:'5-day SSB at one of the Army Selection Centres (Allahabad, Bhopal, Bangalore, Kapurthala). Standard psychological + GTO + PI process.'},
+      {label:'Medical & Training',cls:'p3',desc:'Medical at Military Hospital. Training at IMA Dehradun (~1 year). Commissioned as Lieutenant upon passing out.'},
+    ],
+    syllabus:'No written exam. SSB preparation is the entire focus: leadership qualities, current awareness, technical domain basics, physical fitness, group dynamics, communication skills.',
+    resources:'TGC/SSB preparation guides, Major Kalshi Classes, Cavalier Defence, personality development books, physical fitness routines.',
+    coaching:'Major Kalshi Classes, Olive Greens, Cavalier Defence for SSB. Technical interview preparation from your engineering discipline.',
+  },
+  coastguard: {
+    parent:'defence-index',
+    title:'Indian Coast Guard',
+    sub:'Protecting India\'s Coasts, Exclusive Economic Zone & Maritime Interests',
+    motto:'"Vayam Rakshamah — We Protect."',
+    basics:[
+      ['Conducting Body','Indian Coast Guard (MoD)'],['Frequency','Multiple notifications per year'],
+      ['Mode','Written CBT + Fitness / PST + Medical + Interview'],
+      ['Age (Officer)','Approx. 21–25 years (varies by entry)'],['Education','Graduation or B.Tech (entry-specific)'],
+      ['Entries','Assistant Commandant (GD), Technical, Law, Pilot (CPL holder), etc.'],
+    ],
+    stages:[
+      {label:'Written CBT',cls:'p1',desc:'Online computer-based test covering Mathematics, English, Science & Technology, Reasoning, Current Affairs. 100–150 questions typically.'},
+      {label:'Fitness & Medical',cls:'p2',desc:'Physical fitness tests (running, push-ups, sit-ups), Physical Standard Test (height, weight, chest), and medical examination.'},
+      {label:'Interview',cls:'p3',desc:'Personal interview assessing motivation, awareness, and personality. Final merit for joining training.'},
+    ],
+    syllabus:'Mathematics: 10+2 level — algebra, trigonometry, coordinate geometry, statistics.\nScience & Tech: Physics, Chemistry, basic computing, current developments.\nEnglish: Comprehension, grammar, vocabulary.\nGeneral Awareness: Maritime topics, current affairs, Indian Coast Guard history.',
+    resources:'Coast Guard previous papers, Arihant Navy/CG guide, Lucent GK, 10+2 Physics & Maths textbooks.',
+    coaching:'Major Kalshi Classes, local maritime academies. Physical fitness training is essential for the fitness test.',
+  },
+};
+
+function showExam(id) {
+  const d = examData[id];
+  if(!d) return;
+  currentExamParent = d.parent;
+
+  const trackName = d.parent === 'civil-index' ? 'Civil Services' : 'Armed Forces';
+
+  let stagesHTML = d.stages.map(s=>`
+    <div style="background:rgba(7,18,32,0.5);border:1px solid var(--border);border-radius:3px;padding:20px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span class="phase ${s.cls}">${s.label}</span>
+      </div>
+      <p style="font-size:1rem;color:var(--cream-dark);line-height:1.7;">${s.desc}</p>
+    </div>`).join('');
+
+  let basicsHTML = d.basics.map(r=>`<div class="info-row"><span class="info-key">${r[0]}</span><span class="info-val">${r[1]}</span></div>`).join('');
+
+  document.getElementById('examContent').innerHTML = `
+    <div class="back-bar">
+      <button class="back-btn" onclick="showSection('${d.parent}')">← ${trackName}</button>
+      <span class="breadcrumb">Home <span>›</span> ${trackName} <span>›</span> ${d.title}</span>
+    </div>
+    <div class="exam-hero">
+      <h1>${d.title}</h1>
+      <p class="sub">${d.sub}</p>
+      <p class="motto">${d.motto}</p>
+    </div>
+    <div class="info-grid">
+      <div class="info-card" style="grid-column:1/-1;">
+        <h3>Key Information</h3>
+        ${basicsHTML}
+      </div>
+    </div>
+    <div class="exam-section">
+      <h2>Selection Process</h2>
+      ${stagesHTML}
+    </div>
+    <div class="exam-section">
+      <h2>Syllabus Overview</h2>
+      <p style="white-space:pre-line;">${d.syllabus}</p>
+    </div>
+    <div class="exam-section">
+      <h2>Key Resources & Books</h2>
+      <p>${d.resources}</p>
+    </div>
+    <div class="exam-section">
+      <h2>Coaching & Guidance</h2>
+      <p>${d.coaching}</p>
+    </div>
+    <div style="margin-top:36px;background:rgba(201,168,76,0.06);border:1px solid var(--border-strong);border-radius:3px;padding:28px;text-align:center;">
+      <p style="font-family:'Rajdhani',sans-serif;font-size:0.75rem;letter-spacing:3px;font-weight:600;color:var(--gold-dim);text-transform:uppercase;margin-bottom:10px;">Ready to Start Preparing?</p>
+      <h3 style="font-family:'Rajdhani',sans-serif;font-size:1.4rem;color:var(--cream);margin-bottom:16px;">Get Your Personalised AI Coach for ${d.title}</h3>
+      <button class="btn-gold" onclick="openCoachForExam('${id}')">🎖 Launch AI Coach →</button>
+    </div>
+  `;
+
+  showSection('exam-detail');
+}
+
+function openCoachForExam(examId) {
+  showSection('coach');
+  // pre-select the right track
+  const d = examData[examId];
+  const track = d.parent === 'civil-index' ? 'civil' : 'defence';
+  cSelectTrack(track);
+  // scroll to find the exam chip
+  setTimeout(()=>{
+    const chips = document.querySelectorAll('#cChips .chip');
+    chips.forEach(c=>{
+      if(c.textContent.trim().toLowerCase().includes(d.title.toLowerCase().split('—')[0].trim().toLowerCase().substring(0,8))){
+        c.click();
+      }
+    });
+  },100);
+}
+
+// ════════════════════════════════════════════
+// AI COACH LOGIC
+// ════════════════════════════════════════════
+let cTrack = null, cExam = null, cPlan = '', cHistory = [];
+
+const civilExams = ['UPSC IAS/IPS','Indian Foreign Service (IFS)','CAPF (AC)','Indian Forest Service (IFoS)','State PSC / PCS'];
+const defExams = ['CDS (Combined Defence Services)','NDA (National Defence Academy)','AFCAT','SSC (Tech) Army','Navy SSC','TGC Army','Territorial Army','Coastal Guard'];
+
+function cSelectTrack(t) {
+  cTrack = t; cExam = null;
+  document.getElementById('cCivilBtn').classList.toggle('sel', t==='civil');
+  document.getElementById('cDefBtn').classList.toggle('sel', t==='defence');
+  const exams = t==='civil' ? civilExams : defExams;
+  document.getElementById('cChips').innerHTML = exams.map(e=>
+    `<button class="chip" onclick="cSelectExam(this,'${e}')">${e}</button>`
+  ).join('');
+  document.getElementById('cExamPicker').classList.remove('hidden');
+  document.getElementById('cStep1Btn').disabled = true;
+}
+
+function cSelectExam(el, exam) {
+  document.querySelectorAll('#cChips .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); cExam = exam;
+  document.getElementById('cStep1Btn').disabled = false;
+}
+
+function cSetStep(n) {
+  for(let i=1;i<=4;i++){
+    const s = document.getElementById('cStep'+i);
+    s.classList.remove('active','done');
+    if(i<n) s.classList.add('done');
+    else if(i===n) s.classList.add('active');
+  }
+}
+
+function cGoStep2() {
+  document.getElementById('cTrackCard').classList.add('hidden');
+  document.getElementById('cProfileCard').classList.remove('hidden');
+  cSetStep(2); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function cGoBack(to) {
+  ['cTrackCard','cProfileCard','cPlanCard','cChatCard'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) { el.classList.add('hidden'); }
+  });
+  if(to===1){document.getElementById('cTrackCard').classList.remove('hidden');cSetStep(1);}
+  else if(to===2){document.getElementById('cProfileCard').classList.remove('hidden');cSetStep(2);}
+  else if(to===3){document.getElementById('cPlanCard').classList.remove('hidden');cSetStep(3);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function cGenPlan() {
+  const name=document.getElementById('cName').value.trim();
+  const year=document.getElementById('cYear').value;
+  const edu=document.getElementById('cEdu').value;
+  const hrs=document.getElementById('cHours').value;
+  const weak=document.getElementById('cWeak').value.trim();
+  const strong=document.getElementById('cStrong').value.trim();
+  const prev=document.getElementById('cPrev').value.trim();
+  const errEl=document.getElementById('cProfileErr');
+  errEl.innerHTML='';
+  if(!name||!year||!edu||!hrs){errEl.innerHTML='<div class="error-box">Please fill in Name, Year, Education and Study Hours.</div>';return;}
+
+  document.getElementById('cProfileCard').classList.add('hidden');
+  document.getElementById('cPlanCard').classList.remove('hidden');
+  document.getElementById('cLoader').style.display='flex';
+  document.getElementById('cPlanOut').classList.add('hidden');
+  document.getElementById('cPlanErr').innerHTML='';
+  document.getElementById('cPlanActions').classList.add('hidden');
+  document.getElementById('cPlanBadge').classList.add('hidden');
+  cSetStep(3); window.scrollTo({top:0,behavior:'smooth'});
+
+  const prompt = `You are an expert exam coach for Indian government exams. Create a detailed, personalised preparation plan.
+
+CANDIDATE PROFILE:
+- Name: ${name}
+- Target Exam: ${cExam} (${cTrack==='civil'?'Civil Services':'Defence Forces'} track)
+- Attempt Year: ${year}
+- Education: ${edu}
+- Daily Study Time: ${hrs}
+- Weak Areas: ${weak||'Not specified'}
+- Strong Areas: ${strong||'Not specified'}
+- Previous Attempts: ${prev||'None / First attempt'}
+
+Create a comprehensive preparation roadmap with these sections:
+
+## OVERVIEW & STRATEGY
+A 3–4 line personalised assessment and key strategy.
+
+## EXAM BLUEPRINT
+Key subjects, paper pattern, marks distribution, what to prioritise.
+
+## PHASE-WISE PLAN
+3 phases (Foundation → Consolidation → Revision/Mocks) with timelines based on ${year} target.
+
+## WEEKLY SCHEDULE TEMPLATE
+Sample week given ${hrs} daily. Day-wise (Mon–Sun) breakdown.
+
+## SUBJECT-WISE PRIORITY & RESOURCES
+For each major subject: priority (High/Medium/Low), recommended books, hours/week.
+
+## WEAK AREA ACTION PLAN
+Specific strategy to tackle: ${weak||'general weak areas'}
+
+## MONTHLY MILESTONES
+What to complete by end of each of the first 3 months.
+
+## TODAY'S FIRST TASKS
+Give 3 specific, concrete tasks to start TODAY.
+
+Keep the tone motivating, military-grade discipline + compassionate coach. Be specific and actionable, accurate to Indian exam context.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    const text = data.content.map(b=>b.text||'').join('');
+    cPlan = text;
+    cHistory = [{role:'user',content:`CONTEXT: ${name} preparing for ${cExam} (${cTrack} track), targeting ${year}. Daily study: ${hrs}. Weak: ${weak||'NA'}. Strong: ${strong||'NA'}. Prev attempts: ${prev||'first'}.\nFull plan:\n${text}\n\nNow be their dedicated AI coach. Be warm, sharp, specific. Give actionable daily tasks when asked. Reference their exam and situation always.`}];
+    document.getElementById('cLoader').style.display='none';
+    const out = document.getElementById('cPlanOut');
+    out.classList.remove('hidden');
+    out.innerHTML = renderMd(text);
+    document.getElementById('cPlanBadge').classList.remove('hidden');
+    document.getElementById('cPlanActions').classList.remove('hidden');
+  } catch(err) {
+    document.getElementById('cLoader').style.display='none';
+    document.getElementById('cPlanErr').innerHTML=`<div class="error-box">Error: ${err.message}. Please try again.</div>`;
+    document.getElementById('cPlanActions').classList.remove('hidden');
+  }
+}
+
+function cGoChat() {
+  document.getElementById('cPlanCard').classList.add('hidden');
+  document.getElementById('cChatCard').classList.remove('hidden');
+  cSetStep(4);
+  const name = document.getElementById('cName').value.trim()||'Aspirant';
+  cAddMsg('coach',`Welcome, ${name}! 🎖️ Your plan for <strong>${cExam}</strong> is ready and I have it memorised.<br><br>Ask me anything:<br>• "What should I study today?"<br>• "Give me this week's task list"<br>• "How do I tackle [subject]?"<br>• "I'm struggling with [topic]"<br><br>What would you like to work on first?`);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function cAddMsg(role, html) {
+  const win = document.getElementById('cChatWin');
+  const div = document.createElement('div');
+  div.className = `msg ${role==='coach'?'coach':'user'}`;
+  div.innerHTML = `<div class="av ${role==='coach'?'coach':'you'}">${role==='coach'?'🎖':'👤'}</div><div class="bubble">${html}</div>`;
+  win.appendChild(div); win.scrollTop = win.scrollHeight;
+}
+
+function cAddTyping() {
+  const win = document.getElementById('cChatWin');
+  const div = document.createElement('div');
+  div.className='msg coach'; div.id='cTyping';
+  div.innerHTML=`<div class="av coach">🎖</div><div class="bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+  win.appendChild(div); win.scrollTop=win.scrollHeight;
+}
+
+function cRemTyping(){const t=document.getElementById('cTyping');if(t)t.remove();}
+
+async function cSend() {
+  const inp = document.getElementById('cChatIn');
+  const txt = inp.value.trim(); if(!txt) return;
+  const btn = document.getElementById('cSendBtn');
+  inp.value=''; btn.disabled=true;
+  cAddMsg('user', esc(txt));
+  cAddTyping();
+  cHistory.push({role:'user',content:txt});
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`You are a dedicated AI exam coach for Indian government exams (Civil Services and Defence Forces). You have a full preparation plan for this candidate. Be specific, motivating, military-disciplined but warm. Give actionable daily tasks when asked. Reference their specific exam (${cExam}) and situation. Keep responses focused. Never be generic.`,
+        messages:cHistory
+      })
+    });
+    const data=await res.json();
+    if(data.error) throw new Error(data.error.message);
+    const reply=data.content.map(b=>b.text||'').join('');
+    cHistory.push({role:'assistant',content:reply});
+    cRemTyping(); cAddMsg('coach',renderMd(reply));
+  } catch(err) {
+    cRemTyping(); cAddMsg('coach',`Sorry, hit an error: ${err.message}. Try again.`);
+  }
+  btn.disabled=false; document.getElementById('cChatIn').focus();
+}
+
+function renderMd(t){
+  return t
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^- (.+)$/gm,'• $1<br>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>
